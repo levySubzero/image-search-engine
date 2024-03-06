@@ -14,8 +14,8 @@ client = weaviate.Client(WEAVIATE_URL)
 schema = {
     "classes": [
         {
-            "class": "Dog",
-            "description": "Images of different dogs",
+            "class": "Art",
+            "description": "Artworks by artists",
             "moduleConfig": {
                 "img2vec-neural": {
                     "imageFields": [
@@ -27,9 +27,9 @@ schema = {
             "vectorizer": "img2vec-neural", # the img2vec-neural Weaviate module
             "properties": [
                 {
-                    "name": "breed",
+                    "name": "artwork",
                     "dataType": ["string"],
-                    "description": "name of dog breed",
+                    "description": "name of artwork",
                 },
                 {
                     "name": "image",

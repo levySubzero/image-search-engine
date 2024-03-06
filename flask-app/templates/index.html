@@ -8,10 +8,10 @@
         <form action = "{{ url_for('process_image') }}" method="post" enctype="multipart/form-data">
             <input type="file" id="myFile" name="filepath">
             <input type="submit">
-            {% if dog_image %}
+            {% if art_image %}
             <br/>
             <img class="uploadedImg" 
-                 src='data:image/jpeg;base64, {{dog_image}}'
+                 src='data:image/jpeg;base64, {{art_image}}'
             />
             {% endif %}
         </form>
@@ -22,7 +22,7 @@
         {% for x in content %}
         <div class="imgCard">
             <img src = {{ "./static/img/" + x["path"] }}> </img>
-            <h4> {{ x["breed"] }} </h4>
+            <h4> {{ x["artwork"] }} </h4>
         </div>
         {% endfor %}
     </div>

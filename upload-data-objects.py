@@ -16,18 +16,18 @@ def set_up_batch():
         callback=None,
     )
     
-def clear_up_dogs():
+def clear_up_items():
     """
-    Remove all objects from the Dogs collection.
+    Remove all objects from the Artworks collection.
     This is useful, if we want to rerun the import with different pictures.
     """
     with client.batch as batch:
         batch.delete_objects(
-            class_name="Dog",
+            class_name="Art",
             # same where operator as in the GraphQL API
             where={
                 "operator": "NotEqual",
-                "path": ["breed"],
+                "path": ["artwork"],
                 "valueString": "x"
             },
             output="verbose",
@@ -50,21 +50,21 @@ def import_data():
             # remove .b64 to get the original file name
             image_file = encoded_file_path.replace(".b64", "")
 
-            # remove image file extension and swap - for " " to get the breed name
-            breed = re.sub(".(jpg|jpeg|png)", "", image_file).replace("-", " ")
+            # remove image file extension and swap - for " " to get the artwork name
+            artwork = re.sub(".(jpg|jpeg|png)", "", image_file).replace("-", " ")
 
             # The properties from our schema
             data_properties = {
-                "breed": breed,
+                "artwork": artwork,
                 "image": base64_encoding,
                 "filepath": image_file,
             }
 
-            batch.add_data_object(data_properties, "Dog")
+            batch.add_data_object(data_properties, "Art")
 
 client = weaviate.Client(WEAVIATE_URL)
 set_up_batch()
-clear_up_dogs()
+clear_up_items()
 import_data()
 
 print("The objects have been uploaded to Weaviate.")

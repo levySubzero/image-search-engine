@@ -21,12 +21,12 @@ def weaviate_img_search(img_str):
     sourceImage = { "image": img_str}
 
     weaviate_results = client.query.get(
-        "Dog", ["filepath","breed"]
+        "Art", ["filepath","artwork"]
         ).with_near_image(
             sourceImage, encode=False
         ).with_limit(2).do()
 
-    return weaviate_results["data"]["Get"]["Dog"]
+    return weaviate_results["data"]["Get"]["Art"]
 
 def list_images():
     """
@@ -70,11 +70,11 @@ if client.is_ready():
             for result in weaviate_results:
                 results.append({
                     "path": result["filepath"], 
-                    "breed": result["breed"]
+                    "artwork": result["artwork"]
                 })
 
             print(f"\n {results} \n")
-            return render_template("index.html", content = results, dog_image = img_str)
+            return render_template("index.html", content = results, art_image = img_str)
 
 else:
     print("There is no Weaviate Cluster Connected.")
