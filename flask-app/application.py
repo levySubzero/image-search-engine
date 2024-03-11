@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 from PIL import Image
 import base64
 from io import BytesIO
@@ -24,7 +24,7 @@ def weaviate_img_search(img_str):
         "Art", ["filepath","artwork"]
         ).with_near_image(
             sourceImage, encode=False
-        ).with_limit(2).do()
+        ).with_limit(1).do()
 
     return weaviate_results["data"]["Get"]["Art"]
 
@@ -72,9 +72,19 @@ if client.is_ready():
                     "path": result["filepath"], 
                     "artwork": result["artwork"]
                 })
-
+            if result["artwork"] == 'goggles':
+                title = 'eyes-on-me'
+            elif result["artwork"] == 'face':
+                title = 'tabasamu'
+            elif result["artwork"] == 'nightfire':
+                title = 'midnight-flames'
+            elif result["artwork"] == 'hair':
+                title = 'hair-culture'
+            elif result["artwork"] == 'boys':
+                title = 'brotherhood-3'
             print(f"\n {results} \n")
-            return render_template("index.html", content = results, art_image = img_str)
+            return redirect(f'https://uwezashop.com/products/{title}')
+            # return render_template("index.html", content = results, art_image = img_str)
 
 else:
     print("There is no Weaviate Cluster Connected.")

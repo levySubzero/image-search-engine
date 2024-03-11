@@ -16,8 +16,57 @@
             {% endif %}
         </form>
     </div>
+    <video id="videoElement" autoplay></video>
+    <canvas id="canvasElement" style="display: none;"></canvas>
+    <button onclick="takePicture()">Take Picture</button>
+    <script>
+        async function takePicture() {
+            try {
+                // Get the video and canvas elements
+                const videoElement = document.getElementById('videoElement');
+                const canvasElement = document.getElementById('canvasElement');
+                const context = canvasElement.getContext('2d');
+
+                // Set canvas dimensions to match video dimensions
+                canvasElement.width = videoElement.videoWidth;
+                canvasElement.height = videoElement.videoHeight;
+
+                // Draw the current frame of the video onto the canvas
+                context.drawImage(videoElement, 0, 0, canvasElement.width, canvasElement.height);
+
+                // Get the data URL representing the canvas image
+                const dataURL = canvasElement.toDataURL('image/jpeg');
+
+                // Do something with the captured image (e.g., display it, upload it, etc.)
+                console.log('Captured image:', dataURL);
+            } catch (error) {
+                // Handle error
+                console.error('Error capturing image:', error);
+            }
+        }
+
+        // Function to start the camera
+        async function startCamera() {
+            try {
+                // Get the video element
+                const videoElement = document.getElementById('videoElement');
+
+                // Request access to the camera
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+
+                // Display the camera stream in the video element
+                videoElement.srcObject = stream;
+            } catch (error) {
+                // Handle error
+                console.error('Error accessing the camera:', error);
+            }
+        }
+
+        // Start the camera when the page loads
+        window.onload = startCamera;
+    </script>
         
-    <h2>RESULTS</h2>
+    <!-- <h2>RESULTS</h2>
     <div class = "showColumn">
         {% for x in content %}
         <div class="imgCard">
@@ -25,6 +74,6 @@
             <h4> {{ x["artwork"] }} </h4>
         </div>
         {% endfor %}
-    </div>
+    </div> -->
 </body>
 </html>
